@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>LD35</title>
+  </head>
+  <body>
+    <div class="game" data-js="game">
+      <div class="topbar" data-js="topbar">
+        <div class="cost" data-js="playerMoney">0</div>
+      </div>
+      <div class="container">
+        <div class="col">
+          <canvas class="gameCanvas" data-js="canvas"></canvas>
+        </div>
+        <div class="col ml sidebar">
+          <table>
+            <tr><td>Name:</td><td data-js="moduleName"></td></tr>
+            <tr><td>Cost:</td><td data-js="moduleCost" class="cost"></td></tr>
+            <tr><td>Health:</td><td data-js="moduleHealth"></td></tr>
+            <tr><td class="vat">Desc:</td><td data-js="moduleDesc" class="moduleDesc vat">Shoots things</td></tr>
+          </table>
+          <ul class="moduleShop" data-js="moduleShop">
+            <li class="module gunner" data-js="moduleButton" data-module="gunner"></li>
+            <li class="module launcher" data-js="moduleButton" data-module="launcher"></li>
+            <li class="module repair" data-js="moduleButton" data-module="repair"></li>
+            <li class="module bank" data-js="moduleButton" data-module="bank"></li>
+            <li class="module wall" data-js="moduleButton" data-module="wall"></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <link rel="stylesheet" href="app.css" type="text/css"/>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "skalar"
+  ],
+  "rules": {
+    "no-magic-numbers": 0
+  }
+}
