@@ -7,6 +7,7 @@ export default class Launcher extends Module {
     super(pos, 100)
 
     this.cost = 500
+    this.cooldownTime = 6000
     this.displayName = 'Launcher'
     this.description = 'Fires missiles that track your opponent\'s core'
     this.actionDelay = 3000

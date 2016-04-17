@@ -6,7 +6,7 @@ import Point from '../Point'
 import Particle from './Particle'
 import {range} from '../random'
 import {rectsOverlap} from '../trig'
-import {randomPlan} from './buildPlans'
+import {randomPlan, randomEasyPlan, randomNormalPlan} from './buildPlans'
 
 export default class Game {
   grid = 0
@@ -24,7 +24,7 @@ export default class Game {
 
     const x = Math.floor(grid.x / 2)
     this.player = new HumanPlayer(this, new Point(x, grid.y - 3))
-    this.opponent = new AIPlayer(this, new Point(x, 2), randomPlan())
+    this.opponent = new AIPlayer(this, new Point(x, 2), randomPlan(), 2000, true)
   }
 
   start(gui) {

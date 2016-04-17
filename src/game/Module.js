@@ -18,6 +18,7 @@ export default class Module {
   actionDelay = 0
   lastAction = 0
   cost = 0
+  cooldownTime = 0
   displayName = ''
   description = ''
 

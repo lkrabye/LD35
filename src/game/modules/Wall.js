@@ -6,7 +6,8 @@ export default class Wall extends Module {
   constructor(pos) {
     super(pos, 300)
 
-    this.cost = 10
+    this.cost = 25
+    this.cooldownTime = 800
     this.displayName = 'Wall'
     this.description = 'Simple defensive wall'
   }

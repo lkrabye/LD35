@@ -6,7 +6,8 @@ export default class Repair extends Module {
   constructor(pos) {
     super(pos, 125)
 
-    this.cost = 150
+    this.cost = 175
+    this.cooldownTime = 3000
     this.displayName = 'Repair'
     this.description = 'Repairs adjacent modules'
     this.actionDelay = 2500

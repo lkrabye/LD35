@@ -85,10 +85,19 @@ export default class Gui {
     this.drawParticles()
 
     this.drawTopbar()
+    this.drawModuleShop()
   }
 
   drawTopbar() {
     this.elements.MONEY.textContent = Math.floor(this.game.player.money)
+  }
+
+  drawModuleShop() {
+    Array.from(this.container.querySelectorAll('[data-js=moduleButton]')).forEach(b => {
+      const cd = this.game.player.getCooldown(b.getAttribute('data-module'))
+      const overlay = b.querySelector('.overlay')
+      overlay.style.height = `${cd * 100}%`
+    })
   }
 
   drawGrid() {
@@ -236,6 +245,8 @@ export default class Gui {
     const x = mod.position.x * this.gridSize + this.gridSize / 2
     const y = mod.position.y * this.gridSize + this.gridSize / 2
 
+    const shouldFlip = mod.owner === this.game.opponent
+
     if (mod instanceof Core) {
       this.ctx.fillStyle = '#fff'
       this.ctx.strokeStyle = '#000'
@@ -259,12 +270,10 @@ export default class Gui {
       this.ctx.drawImage(img, x - Math.floor(img.width / 2), y - Math.floor(img.height / 2))
     }
     else if (mod instanceof Launcher) {
-      const img = this.imageCache.launcher.img
-      this.ctx.drawImage(img, x - Math.floor(img.width / 2), y)
+      this.drawModuleImage(this.imageCache.launcher.img, [x, y], shouldFlip)
     }
     else if (mod instanceof Gunner) {
-      const img = this.imageCache.gunner.img
-      this.ctx.drawImage(img, x - Math.floor(img.width / 2), y - 4)
+      this.drawModuleImage(this.imageCache.gunner.img, [x, y], shouldFlip)
     }
     else if (mod instanceof Bank) {
       const img = this.imageCache.bank.img
@@ -273,6 +282,21 @@ export default class Gui {
     else if (mod instanceof Wall) {
       const img = this.imageCache.wall.img
       this.ctx.drawImage(img, x - Math.floor(img.width / 2), y - 4)
+    }
+  }
+
+  drawModuleImage(img, [x, y], flip) {
+    const dx = x - Math.floor(img.width / 2)
+    const dy = y - 4
+    if (!flip) {
+      this.ctx.drawImage(img, dx, dy)
+    }
+    else {
+      this.ctx.save()
+      this.ctx.translate(Math.floor(dx + img.width / 2), Math.floor(dy + img.width / 2))
+      this.ctx.rotate(degsToRads(180))
+      this.ctx.drawImage(img, -img.width / 2, -img.height / 2)
+      this.ctx.restore()
     }
   }
 
@@ -332,16 +356,17 @@ export default class Gui {
     this.container.querySelector('[data-js=moduleName]').textContent = blueprint.displayName
     this.container.querySelector('[data-js=moduleCost]').textContent = blueprint.cost
     this.container.querySelector('[data-js=moduleHealth]').textContent = blueprint.maxHealth
+    this.container.querySelector('[data-js=moduleCooldown]').textContent = `${(blueprint.cooldownTime / 1000).toFixed(2)} sec`
     this.container.querySelector('[data-js=moduleDesc]').textContent = blueprint.description
 
     this.currentModule = mod
   }
 
-  getModuleType(name) {
-    if (name === MODULE_NAMES.GUNNER) return Gunner
-    if (name === MODULE_NAMES.LAUNCHER) return Launcher
-    if (name === MODULE_NAMES.REPAIR) return Repair
-    if (name === MODULE_NAMES.BANK) return Bank
-    if (name === MODULE_NAMES.WALL) return Wall
+  getModuleType(typeName) {
+    if (typeName === MODULE_NAMES.GUNNER) return Gunner
+    if (typeName === MODULE_NAMES.LAUNCHER) return Launcher
+    if (typeName === MODULE_NAMES.REPAIR) return Repair
+    if (typeName === MODULE_NAMES.BANK) return Bank
+    if (typeName === MODULE_NAMES.WALL) return Wall
   }
 }

@@ -1,16 +1,17 @@
 import Player from './Player'
 
-const AI_INTERVAL = 10
-
 export default class AIPlayer extends Player {
   actionDelay = 0
+  aiInterval = 0
   buildPlan = []
 
-  constructor(game, rootPos, plan) {
+  constructor(game, rootPos, plan, interval, smartCooldown = false) {
     super(game, rootPos)
 
     this.color = '#933'
     this.buildPlan = plan
+    this.aiInterval = interval
+    this.smartCooldown = smartCooldown
   }
 
   tick(dt) {
@@ -18,7 +19,7 @@ export default class AIPlayer extends Player {
 
     this.actionDelay -= dt * 1000
     if (this.actionDelay <= 0) {
-      this.actionDelay = AI_INTERVAL
+      this.actionDelay = this.aiInterval
 
       this.doAI()
     }
@@ -34,6 +35,9 @@ export default class AIPlayer extends Player {
     for (const [type, offset] of this.buildPlan) {
       const pos = rootPos.clone().add(offset)
       if (!this.findModule(type, pos)) {
+        if (this.smartCooldown && this.getCooldown(type.name) > 0) {
+          continue
+        }
         return this.build(type, pos)
       }
     }

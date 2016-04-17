@@ -12,13 +12,13 @@ import Point from '../Point'
 
 const easyPlans = [
   [
-    [Gunner, new Point(0, 1)],
     [Gunner, new Point(1, 0)],
     [Gunner, new Point(-1, 0)],
     [Wall, new Point(-2, 0)],
     [Wall, new Point(2, 0)],
     [Gunner, new Point(3, 0)],
     [Gunner, new Point(-3, 0)],
+    [Gunner, new Point(0, 1)],
     [Repair, new Point(4, 0)],
     [Repair, new Point(-4, 0)],
     [Launcher, new Point(4, -1)],

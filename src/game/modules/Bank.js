@@ -7,6 +7,7 @@ export default class Bank extends Module {
     super(pos, 250)
 
     this.cost = 200
+    this.cooldownTime = 3500
     this.displayName = 'Bank'
     this.description = `Generates ${this.incomeAmount} money per second`
     this.actionDelay = 1000

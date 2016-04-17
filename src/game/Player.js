@@ -9,9 +9,10 @@ export default class Player {
   color = null
   root = null
   modules = []
-  money = 500000
+  money = 50
   income = 15
   onAddProjectile = null
+  cooldowns = new Map()
 
   constructor(game, rootPos) {
     this.game = game
@@ -19,6 +20,11 @@ export default class Player {
     this.root.game = this.game
     this.root.owner = this
     this.modules.push(this.root)
+  }
+
+  tick(dt) {
+    this.changeMoney(dt * this.income)
+    ;[...this.modules].forEach(m => m.tick(dt))
   }
 
   addModule(mod) {
@@ -35,6 +41,12 @@ export default class Player {
       return false
     }
 
+    const now = new Date().getTime()
+    const modTypeName = mod.constructor.name.toLowerCase()
+    if (this.getCooldown(modTypeName) > 0) {
+      return false
+    }
+
     const positions = [DIR_UP, DIR_RIGHT, DIR_DOWN, DIR_LEFT].map(dir => tile.clone().add(dirToPoint(dir)))
     const neighbors = this.modules.filter(m => !!positions.find(p => p.equals(m.position)))
 
@@ -43,6 +55,10 @@ export default class Player {
       mod.game = this.game
       mod.owner = this
       this.modules.push(mod)
+      this.cooldowns.set(modTypeName, {
+        ready: now + mod.cooldownTime,
+        cooldown: mod.cooldownTime
+      })
 
       neighbors.forEach(n => {
         mod.neighbors.push(n)
@@ -51,9 +67,13 @@ export default class Player {
     }
   }
 
-  tick(dt) {
-    this.changeMoney(dt * this.income)
-    ;[...this.modules].forEach(m => m.tick(dt))
+  getCooldown(typeName) {
+    const now = new Date().getTime()
+    const obj = this.cooldowns.get(typeName.toLowerCase())
+    const cd = obj ? obj.ready : 0
+    if (cd < now) return 0
+
+    return (cd - now) / obj.cooldown
   }
 
   changeMoney(amount) {

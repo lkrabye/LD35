@@ -5,7 +5,8 @@ export default class Gunner extends Module {
   constructor(pos) {
     super(pos, 175)
 
-    this.cost = 50
+    this.cost = 75
+    this.cooldownTime = 2000
     this.displayName = 'Gunner'
     this.description = 'Fires fast but weak shots that travel in a straight line'
     this.actionDelay = 800
