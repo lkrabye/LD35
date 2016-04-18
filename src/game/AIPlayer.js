@@ -26,7 +26,9 @@ export default class AIPlayer extends Player {
   }
 
   doAI() {
-    this.followPlan()
+    if (!this.game.winner) {
+      this.followPlan()
+    }
   }
 
   followPlan() {

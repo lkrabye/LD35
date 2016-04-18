@@ -1,5 +1,6 @@
 .game {
   width: 800px;
+  position: relative;
 }
 
 .gameCanvas {
@@ -75,4 +76,71 @@
   background-repeat: no-repeat;
   background-position: left;
   padding-left: 16px;
+}
+
+.topbar {
+  position: relative;
+  margin-bottom: 4px;
+
+  .audio {
+    position: absolute;
+    top: 0;
+    left: 180px;
+
+    label {
+      margin-right: 6px;
+    }
+
+    button {
+    	width: 16px;
+    	height: 16px;
+    	border: 0;
+    	vertical-align: middle;
+
+      &.toggleMusic {
+        background: transparent url(#{$gfx-path}music.png) no-repeat 0 -16px;
+      }
+
+      &.toggleSound {
+        background: transparent url(#{$gfx-path}sound.png) no-repeat 0 -16px;
+      }
+
+      &.enabled {
+      	background-position: 0 0;
+      }
+    }
+  }
+}
+
+
+.screen {
+  position: absolute;
+  background-color: #f3f3f3;
+  border: 1px solid #333;
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 2px #888;
+  display: none;
+
+  &.active {
+    display: block;
+  }
+
+  &.winScreen {
+    width: 240px;
+    height: 96px;
+    left: 96px;
+    top: 288px;
+    padding: 20px;
+    text-align: center;
+  }
+
+  &.setupScreen {
+    width: 336px;
+    height: 192px;
+    left: 48px;
+    top: 240px;
+    padding: 20px;
+    text-align: center;
+  }
 }

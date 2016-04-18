@@ -1,7 +1,7 @@
 import TWEEN from 'tween.js'
 import {sample} from 'lodash'
 
-import Module from '../Module'
+import Module from './Module'
 import Point from '../../Point'
 import {range} from '../../random'
 
@@ -41,5 +41,11 @@ export default class Core extends Module {
 
   pause() {
     setTimeout(() => { this.idle = true }, range(0, 3000))
+  }
+
+  kill() {
+    super.kill()
+
+    this.game.playerLost(this.owner)
   }
 }

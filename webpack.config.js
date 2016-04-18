@@ -34,7 +34,7 @@ module.exports = {
         ]
       },
       {
-        test: /\.(mp3)$/i,
+        test: /\.(mp3|ogg)$/i,
         include: path.resolve(__dirname, 'src'),
         loader: 'file'
       },

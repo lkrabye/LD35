@@ -1,4 +1,4 @@
-import Module from '../Module'
+import Module from './Module'
 
 export default class Repair extends Module {
   healAmount = 0.1

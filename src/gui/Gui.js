@@ -39,7 +39,8 @@ export default class Gui {
   imageCache = {}
   currentModule = null
   elements = {
-    MONEY: null
+    MONEY: null,
+    MUSIC: null,
   }
 
   constructor(container, game, settings, callback) {
@@ -59,6 +60,15 @@ export default class Gui {
 
     this.elements.MONEY = this.container.querySelector('[data-js=playerMoney]')
 
+    this.elements.MUSIC = document.getElementById('music')
+    this.elements.MUSIC_TOGGLE = document.querySelector('[data-js="toggleMusic"]')
+    this.elements.MUSIC_TOGGLE.addEventListener('click', ::this.toggleMusic)
+    this.elements.SOUND_TOGGLE = document.querySelector('[data-js="toggleSound"]')
+    this.elements.SOUND_TOGGLE.addEventListener('click', ::this.toggleSound)
+
+    this.toggleMusic()
+    this.toggleSound()
+
     Promise.all([
       loadImage('gfx/missile.png', 'missile'),
       loadImage('gfx/bullet.png', 'bullet'),
@@ -75,6 +85,8 @@ export default class Gui {
       this.changeModule(MODULE_NAMES.GUNNER)
       callback()
     })
+
+    this.showSetupScreen()
   }
 
   draw() {
@@ -333,14 +345,16 @@ export default class Gui {
   }
 
   boardClicked(evt) {
+    if (this.game.winner || !this.game.started) return
+
     const clickPos = this.getMousePos(evt)
 
-    if (!this.game.player.addModule(new (this.getModuleType(this.currentModule))(clickPos.tile))) {
-      // TODO: notify error
-    }
+    this.game.player.addModule(new (this.getModuleType(this.currentModule))(clickPos.tile))
   }
 
   moduleShopClicked(evt) {
+    if (this.game.winner || !this.game.started) return
+
     this.changeModule(evt.target.getAttribute('data-module'))
   }
 
@@ -368,5 +382,45 @@ export default class Gui {
     if (typeName === MODULE_NAMES.REPAIR) return Repair
     if (typeName === MODULE_NAMES.BANK) return Bank
     if (typeName === MODULE_NAMES.WALL) return Wall
+  }
+
+  toggleMusic() {
+    this.elements.MUSIC_TOGGLE.classList.toggle('enabled')
+    const music = this.elements.MUSIC
+    if (music.paused) {
+      music.play()
+    }
+    else {
+      music.pause()
+    }
+  }
+
+  toggleSound() {
+    this.elements.SOUND_TOGGLE.classList.toggle('enabled')
+    this.game.toggleSound()
+  }
+
+  startGame() {
+    const setupScreen = this.container.querySelector('[data-js="setupScreen"]')
+    setupScreen.classList.remove('active')
+
+    const easyCheck = setupScreen.querySelector('[data-js="easyMode"]')
+    const settings = {
+      easy: easyCheck.checked
+    }
+
+    this.game.start(settings)
+  }
+
+  showSetupScreen() {
+    const setupScreen = this.container.querySelector('[data-js="setupScreen"]')
+    setupScreen.classList.add('active')
+    setupScreen.querySelector('[data-js="startButton"]').addEventListener('click', ::this.startGame)
+  }
+
+  showEndScreen(playerDidWin) {
+    const winScreen = this.container.querySelector('[data-js="winScreen"]')
+    winScreen.classList.add('active')
+    winScreen.querySelector('[data-js="result"]').textContent = playerDidWin ? 'Congratulations, you won!' : 'Sorry - you lost :('
   }
 }

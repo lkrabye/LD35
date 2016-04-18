@@ -1,4 +1,4 @@
-import Module from '../Module'
+import Module from './Module'
 
 export default class Wall extends Module {
   incomeAmount = 50

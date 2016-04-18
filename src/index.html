@@ -2,12 +2,16 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>LD35</title>
+    <title>Feuding Space Blobs</title>
   </head>
   <body>
     <div class="game" data-js="game">
       <div class="topbar" data-js="topbar">
         <div class="cost" data-js="playerMoney">0</div>
+        <div class="audio">
+          <label id="musicLabel">Music <button class="toggleMusic" data-js="toggleMusic"></button></label>
+          <label id="musicLabel">Sound <button class="toggleSound" data-js="toggleSound"></button></label>
+        </div>
       </div>
       <div class="container">
         <div class="col">
@@ -30,7 +34,31 @@
           </ul>
         </div>
       </div>
+
+      <div class="screen setupScreen" data-js="setupScreen">
+        <h1>Feuding Space Blobs</h1>
+        <br/>
+        <div><label>Easy mode: <input type="checkbox" data-js="easyMode" checked></label></div>
+        <br/>
+        <div><button type="button" data-js="startButton">Start</button></div>
+      </div>
+
+      <div class="screen winScreen" data-js="winScreen">
+        <div data-js="result">Congratulations, you won!</div>
+        <br/>
+        <div><small>Refresh this page to play again</small></div>
+      </div>
+
+      <p><small>
+      	A game by Lasse Krabye (@lasse_k)<br/>
+      	Made for the <a href="http://www.ludumdare.com/compo/ludum-dare-35/">Ludum Dare 35</a> 48h solo compo aug 16-18 2016
+      </small></p>
     </div>
+
+    <audio id="music" loop>
+    	<source src="sfx/music.ogg" type="audio/ogg"/>
+    	<source src="sfx/music.mp3" type="audio/mpeg"/>
+    </audio>
     <link rel="stylesheet" href="app.css" type="text/css"/>
     <script src="app.js"></script>
   </body>

@@ -1,7 +1,11 @@
 const cache = new Map()
+let enabled = false
 
-export default function playSound(url) {
-  return
+export function playSound(url) {
+  if (!enabled) {
+    return
+  }
+
   let cached = cache.get(url)
   if (!cached) {
     cached = []
@@ -14,5 +18,8 @@ export default function playSound(url) {
     cached.push(available)
   }
   available.play()
-  console.log(cache)
+}
+
+export function toggleSound() {
+  enabled = !enabled
 }

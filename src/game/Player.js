@@ -9,7 +9,7 @@ export default class Player {
   color = null
   root = null
   modules = []
-  money = 50
+  money = 100
   income = 15
   onAddProjectile = null
   cooldowns = new Map()

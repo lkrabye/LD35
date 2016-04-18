@@ -1,4 +1,4 @@
-import Module from '../Module'
+import Module from './Module'
 import {Bullet} from '../projectiles'
 
 export default class Gunner extends Module {

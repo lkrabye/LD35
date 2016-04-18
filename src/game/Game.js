@@ -7,6 +7,7 @@ import Particle from './Particle'
 import {range} from '../random'
 import {rectsOverlap} from '../trig'
 import {randomPlan, randomEasyPlan, randomNormalPlan} from './buildPlans'
+import {toggleSound} from '../sound'
 
 export default class Game {
   grid = 0
@@ -17,24 +18,36 @@ export default class Game {
   particles = []
   gui = null
   lastTick = 0
+  winner = null
+  started = false
 
   constructor({grid, gridSize}) {
     this.grid = grid
     this.gridSize = gridSize
-
-    const x = Math.floor(grid.x / 2)
-    this.player = new HumanPlayer(this, new Point(x, grid.y - 3))
-    this.opponent = new AIPlayer(this, new Point(x, 2), randomPlan(), 2000, true)
   }
 
-  start(gui) {
+  init(gui) {
     this.gui = gui
     this.lastTick = new Date().getTime()
+  }
+
+  start(settings) {
+    const plan = settings.easy ? randomEasyPlan() : randomNormalPlan()
+    const delay = settings.easy ? 5000 : 1000
+
+    const x = Math.floor(this.grid.x / 2)
+    this.player = new HumanPlayer(this, new Point(x, this.grid.y - 3))
+    this.opponent = new AIPlayer(this, new Point(x, 2), plan, delay, !settings.easy)
+
+    this.started = true
     setInterval(::this.tick, 1000 / 16)
-    this.temp = 0
   }
 
   tick() {
+    if (this.winner) {
+      return
+    }
+
     const dt = (new Date().getTime() - this.lastTick) / 1000
     this.player.tick(dt)
     this.opponent.tick(dt)
@@ -87,7 +100,6 @@ export default class Game {
   }
 
   fireProjectile(projectile, module) {
-    this.temp = (this.temp + 1 % 360)
     projectile.owner = module.owner
     projectile.init(
       new Point(
@@ -138,5 +150,14 @@ export default class Game {
       )
       this.particles.push(particle)
     }
+  }
+
+  playerLost(p) {
+    this.winner = this.opponentOf(p)
+    this.gui.showEndScreen(this.winner === this.player)
+  }
+
+  toggleSound() {
+    toggleSound()
   }
 }

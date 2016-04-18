@@ -1,6 +1,6 @@
-import Module from '../Module'
+import Module from './Module'
 import {Missile} from '../projectiles'
-import playSound from '../../sound'
+import {playSound} from '../../sound'
 
 export default class Launcher extends Module {
   constructor(pos) {
